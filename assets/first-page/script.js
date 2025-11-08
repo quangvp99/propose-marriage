@@ -28,6 +28,60 @@ function createPopup() {
     }, 25000);
 }
 
+function showSwipeGuide() {
+    const guide = document.createElement("div");
+    guide.innerHTML = "<span>◀</span><span>◀</span><span>◀</span><span>◀</span><span>◀</span>";
+    guide.style.cssText = "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 60px; z-index: 9999; display: flex; gap: 10px;";
+    
+    const style = document.createElement("style");
+    style.textContent = "@keyframes glow { 0% { color: rgba(255,255,255,0.3); } 100% { color: #fc72a7ff; } } .guide span:nth-child(1) { animation: glow 0.6s infinite alternate 0.4s; } .guide span:nth-child(2) { animation: glow 0.6s infinite alternate 0.3s; } .guide span:nth-child(3) { animation: glow 0.6s infinite alternate 0.2s; } .guide span:nth-child(4) { animation: glow 0.6s infinite alternate 0.1s; } .guide span:nth-child(5) { animation: glow 0.6s infinite alternate; }";
+    document.head.appendChild(style);
+    guide.className = "guide";
+    document.body.appendChild(guide);
+    
+    setupSwipeDetection();
+}
+
+function setupSwipeDetection() {
+    let startX = 0;
+    
+    document.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+    });
+    
+    document.addEventListener("touchend", (e) => {
+        const endX = e.changedTouches[0].clientX;
+        if (startX - endX > 100) {
+            navigateToSecondPage();
+        }
+    });
+    
+    // Hỗ trợ chuột cho desktop
+    document.addEventListener("mousedown", (e) => {
+        startX = e.clientX;
+    });
+    
+    document.addEventListener("mouseup", (e) => {
+        if (startX - e.clientX > 100) {
+            navigateToSecondPage();
+        }
+    });
+}
+
+function navigateToSecondPage() {
+    const overlay = document.createElement("div");
+    overlay.style.cssText = "position: fixed; top: 0; left: 100%; width: 100%; height: 100%; background: #F8C7DA; z-index: 10000; transition: left 0.5s ease;";
+    document.body.appendChild(overlay);
+    
+    setTimeout(() => {
+        overlay.style.left = "0";
+    }, 10);
+    
+    setTimeout(() => {
+        window.location.href = "second-page.html";
+    }, 500);
+}
+
 function startPopups() {
     setInterval(() => {
         createPopup();
@@ -54,5 +108,11 @@ document.addEventListener("click", function startExperience() {
     });
     enterFullscreen();
     startPopups();
+    
+    // Hiển thị hướng dẫn vuốt sau 15s
+    setTimeout(() => {
+        showSwipeGuide();
+    }, 1000);
+    
     document.removeEventListener("click", startExperience);
 });

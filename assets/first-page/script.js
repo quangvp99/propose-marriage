@@ -28,6 +28,41 @@ function createPopup() {
     }, 25000);
 }
 
+function showLoadingScreen() {
+    const loadingContainer = document.createElement("div");
+    loadingContainer.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9998; display: flex; flex-direction: column; justify-content: center; align-items: center;";
+    
+    const spinner = document.createElement("div");
+    spinner.style.cssText = "width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #fc72a7ff; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 30px;";
+    
+    const energyBarContainer = document.createElement("div");
+    energyBarContainer.style.cssText = "width: 300px; height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; position: relative;";
+    
+    const energyBar = document.createElement("div");
+    energyBar.style.cssText = "width: 0%; height: 100%; background: linear-gradient(90deg, #ff6b9d, #fc72a7ff); border-radius: 10px; transition: width 0.1s ease;";
+    
+    const spinStyle = document.createElement("style");
+    spinStyle.textContent = "@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }";
+    document.head.appendChild(spinStyle);
+    
+    energyBarContainer.appendChild(energyBar);
+    loadingContainer.appendChild(spinner);
+    loadingContainer.appendChild(energyBarContainer);
+    document.body.appendChild(loadingContainer);
+    
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 100 / 150; // 15s = 150 * 100ms
+        energyBar.style.width = Math.min(progress, 100) + "%";
+        
+        if (progress >= 100) {
+            clearInterval(interval);
+            loadingContainer.remove();
+            showSwipeGuide();
+        }
+    }, 100);
+}
+
 function showSwipeGuide() {
     const guide = document.createElement("div");
     guide.innerHTML = "<span>◀</span><span>◀</span><span>◀</span><span>◀</span><span>◀</span>";
@@ -111,10 +146,10 @@ document.addEventListener("click", function startExperience() {
     enterFullscreen();
     startPopups();
     
-    // Hiển thị hướng dẫn vuốt sau 15s
+    // Hiển thị loading screen sau 1s, sau đó showSwipeGuide sau 15s
     setTimeout(() => {
-        showSwipeGuide();
-    }, 1000);
+        showLoadingScreen();
+    }, 5000);
     
     document.removeEventListener("click", startExperience);
 });

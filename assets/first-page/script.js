@@ -13,8 +13,8 @@ function createPopup() {
     const screenHeight = window.innerHeight;
 
     // Điều chỉnh giới hạn vị trí để pop-up không tràn ra ngoài
-    const maxWidth = screenWidth - 150; // Giảm kích thước tối đa của pop-up
-    const maxHeight = screenHeight - 50;
+    const maxWidth = screenWidth; // Giảm kích thước tối đa của pop-up
+    const maxHeight = screenHeight;
     const x = Math.floor(Math.random() * (maxWidth < 0 ? 0 : maxWidth));
     const y = Math.floor(Math.random() * (maxHeight < 0 ? 0 : maxHeight));
 
@@ -65,13 +65,45 @@ function showLoadingScreen() {
 
 function showSwipeGuide() {
     const guide = document.createElement("div");
-    guide.innerHTML = "<span>◀</span><span>◀</span><span>◀</span><span>◀</span><span>◀</span>";
-    guide.style.cssText = "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 60px; z-index: 9999; display: flex; gap: 10px;";
+    guide.innerHTML = "<div class='arrow'></div><div class='arrow'></div><div class='arrow'></div>";
+    guide.style.cssText = "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; display: flex; gap: 15px; align-items: center;";
     
     const style = document.createElement("style");
-    style.textContent = "@keyframes glow { 0% { color: rgba(255,255,255,0.3); } 100% { color: #fc72a7ff; } } .guide span:nth-child(1) { animation: glow 0.6s infinite alternate 0.4s; } .guide span:nth-child(2) { animation: glow 0.6s infinite alternate 0.3s; } .guide span:nth-child(3) { animation: glow 0.6s infinite alternate 0.2s; } .guide span:nth-child(4) { animation: glow 0.6s infinite alternate 0.1s; } .guide span:nth-child(5) { animation: glow 0.6s infinite alternate; }";
+    style.textContent = `
+        @keyframes slideLeft {
+            0% { opacity: 0.3; transform: translateX(0px); }
+            50% { opacity: 1; transform: translateX(-10px); }
+            100% { opacity: 0.3; transform: translateX(-20px); }
+        }
+        @-webkit-keyframes slideLeft {
+            0% { opacity: 0.3; -webkit-transform: translateX(0px); }
+            50% { opacity: 1; -webkit-transform: translateX(-10px); }
+            100% { opacity: 0.3; -webkit-transform: translateX(-20px); }
+        }
+        .arrow {
+            width: 0;
+            height: 0;
+            border-top: 25px solid transparent;
+            border-bottom: 25px solid transparent;
+            border-right: 40px solid #fc72a7ff;
+            animation: slideLeft 1.2s infinite ease-in-out;
+            -webkit-animation: slideLeft 1.2s infinite ease-in-out;
+        }
+        .arrow:nth-child(1) {
+            animation-delay: 0s;
+            -webkit-animation-delay: 0s;
+        }
+        .arrow:nth-child(2) {
+            animation-delay: 0.2s;
+            -webkit-animation-delay: 0.2s;
+        }
+        .arrow:nth-child(3) {
+            animation-delay: 0.4s;
+            -webkit-animation-delay: 0.4s;
+        }
+    `;
     document.head.appendChild(style);
-    guide.className = "guide";
+    guide.className = "swipe-guide";
     document.body.appendChild(guide);
     
     setupSwipeDetection();

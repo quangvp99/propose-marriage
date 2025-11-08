@@ -1,0 +1,79 @@
+body {
+    margin: 0;
+    background-color: black;
+    overflow: hidden;
+}
+
+.popup {
+    position: absolute;
+    padding: 10px 20px;
+    background-color: #F8C7DA;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px pink;
+    animation: fadeOut 10s ease forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+.dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #F8C7DA;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 0 15px pink;
+    z-index: 1000;
+    max-width: 80%;
+    box-sizing: border-box;
+}
+
+/* Media Queries cho màn hình nhỏ */
+@media screen and (max-width: 600px) {
+    .popup {
+        padding: 8px 12px;
+        font-size: 14px;
+        max-width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .dialog {
+        padding: 15px;
+        font-size: 18px;
+        max-width: 90%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .popup {
+        padding: 6px 10px;
+        font-size: 12px;
+        max-width: 120px;
+    }
+
+    .dialog {
+        padding: 10px;
+        font-size: 16px;
+    }
+}

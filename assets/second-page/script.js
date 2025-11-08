@@ -95,7 +95,7 @@ yesBtn.addEventListener('click', () => {
     .catch(error => console.log('Lỗi gửi Telegram:', error));
   
   bgMusic.pause(); // Dừng nhạc nền
-  question.textContent = 'Anh biết mà! Chúc mừng em đã có anh ❤️';
+  question.textContent = 'Anh biết mà! Chúc mừng Chiiu đã có anh ❤️';
   gif.src = 'https://i.pinimg.com/originals/7e/f6/9c/7ef69cd0a6b0b78526c8ce983b3296fc.gif';
   noBtn.style.display = 'none';
   yesBtn.style.display = 'none';

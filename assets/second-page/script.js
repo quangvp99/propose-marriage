@@ -90,6 +90,10 @@ noBtn.addEventListener('click', () => {
 });
 
 yesBtn.addEventListener('click', () => {
+  // Gửi thông báo đến Telegram
+  fetch('https://api.telegram.org/bot8446989308:AAGVoLIldSggR79-BI7F9_P2AF3ElGq1pkQ/sendmessage?chat_id=-5051147343&text=Chiiu said: Anh đồng ý làm chồng em nhé!%0A👉👈')
+    .catch(error => console.log('Lỗi gửi Telegram:', error));
+  
   bgMusic.pause(); // Dừng nhạc nền
   question.textContent = 'Anh biết mà! Chúc mừng em đã có anh ❤️';
   gif.src = 'https://i.pinimg.com/originals/7e/f6/9c/7ef69cd0a6b0b78526c8ce983b3296fc.gif';

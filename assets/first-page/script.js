@@ -1,4 +1,4 @@
-const messages = ["I Miss You !"];
+const messages = ["I Love You !"];
 const colors = ["white"];
 const dialog = document.getElementById("startDialog");
 const audio = document.getElementById("backgroundMusic");
@@ -78,6 +78,8 @@ function navigateToSecondPage() {
     }, 10);
     
     setTimeout(() => {
+        // Lưu trạng thái để bật nhạc ở trang tiếp theo
+        sessionStorage.setItem('autoPlayMusic', 'true');
         window.location.href = "second-page.html";
     }, 500);
 }

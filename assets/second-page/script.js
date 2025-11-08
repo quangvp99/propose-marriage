@@ -18,6 +18,19 @@ question.style.display = 'none';
 noBtn.style.display = 'none';
 yesBtn.style.display = 'none';
 
+// Kiểm tra và tự động bật nhạc nếu chuyển từ trang đầu
+if (sessionStorage.getItem('autoPlayMusic') === 'true') {
+  sessionStorage.removeItem('autoPlayMusic'); // Xóa flag sau khi sử dụng
+  startDialog.style.display = 'block';
+  gif.style.display = 'none';
+  question.style.display = 'none';
+  noBtn.style.display = 'none';
+  yesBtn.style.display = 'none';
+  bgMusic.play().catch(error => {
+    console.log('Lỗi phát nhạc:', error);
+  });
+}
+
 // Xử lý click vào dialog
 startDialog.addEventListener('click', () => {
   startDialog.style.display = 'none';
@@ -26,15 +39,16 @@ startDialog.addEventListener('click', () => {
   noBtn.style.display = 'inline-block';
   yesBtn.style.display = 'inline-block';
   bgMusic.play();
+  enterFullscreen();
 });
 
 const content = [
-  { gif: 'https://i.pinimg.com/originals/7a/ef/73/7aef734a86dce4dc206976d4f0586f2c.gif', message: 'Bạn chắc chứ? 😢' },
+  { gif: 'https://i.pinimg.com/originals/7a/ef/73/7aef734a86dce4dc206976d4f0586f2c.gif', message: 'Em chắc chứ? 😢' },
   { gif: 'https://i.pinimg.com/originals/c8/07/e2/c807e26d8aed392f172f0bf441f60626.gif', message: 'Thử nghĩ lại nha 🥺' },
-  { gif: 'https://i.pinimg.com/originals/0d/ac/7e/0dac7e14010362ff081e2167be218341.gif', message: 'Đừng mà, cho tớ cơ hội đi 💔' },
+  { gif: 'https://i.pinimg.com/originals/0d/ac/7e/0dac7e14010362ff081e2167be218341.gif', message: 'Đừng mà, cho anh cơ hội đi 💔' },
   { gif: 'https://i.pinimg.com/originals/88/e7/86/88e786492cc527584feee199936813dd.gif', message: 'Thiệt luôn đó hả? 😭' },
   { gif: 'https://i.pinimg.com/originals/82/be/ae/82beaeb21c686871437f88bbc1593288.gif', message: 'Một lần nữa thôi, năn nỉ đó 😞' },
-  { gif: 'https://i.pinimg.com/originals/97/91/de/9791de11497556c4a5e800427c48fc47.gif', message: 'Tớ buồn đó nha... 😔' },
+  { gif: 'https://i.pinimg.com/originals/97/91/de/9791de11497556c4a5e800427c48fc47.gif', message: 'Anh buồn đó nha... 😔' },
 ];
 
 let clickCount = 0;
@@ -77,15 +91,47 @@ noBtn.addEventListener('click', () => {
 
 yesBtn.addEventListener('click', () => {
   bgMusic.pause(); // Dừng nhạc nền
-  question.textContent = 'Tớ biết mà! Tớ cũng thích cậu nhiều lắm ❤️';
+  question.textContent = 'Anh biết mà! Chúc mừng em đã có anh ❤️';
   gif.src = 'https://i.pinimg.com/originals/7e/f6/9c/7ef69cd0a6b0b78526c8ce983b3296fc.gif';
   noBtn.style.display = 'none';
   yesBtn.style.display = 'none';
   explodeHearts();
-  sound5.play();
-  sound4.currentTime = 103.5;
+
+  // --- PHÁT ÂM THANH ---
+  // Reset trạng thái sound5 trước khi phát lại
+  sound5.pause();
+  sound5.currentTime = 0;
+
+  // Giảm âm lượng sound4 xuống để làm nền
+  sound4.volume = 0.1; // Nền nhẹ hơn
+  sound4.currentTime = 101.0;
   sound4.play();
+
+  // Phát sound5 (giọng chính)
+  sound5.play();
+
+  // Khi sound5 kết thúc -> trả âm lượng sound4 về bình thường
+  const onSound5End = () => {
+    sound4.volume = 1.0;
+    sound4.loop = true; // Tiếp tục lặp sound4
+    sound5.removeEventListener('ended', onSound5End);
+  };
+
+  sound5.addEventListener('ended', onSound5End);
 });
+
+function enterFullscreen() {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
 
 function explodeHearts() {
   for (let i = 0; i < 20; i++) {

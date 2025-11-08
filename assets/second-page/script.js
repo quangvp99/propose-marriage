@@ -1,11 +1,32 @@
+const startDialog = document.getElementById('startDialog');
 const gif = document.getElementById('gif');
 const question = document.getElementById('question');
 const noBtn = document.getElementById('noBtn');
 const yesBtn = document.getElementById('yesBtn');
+const bgMusic = document.getElementById('bg-music0');
 const sound1 = document.getElementById('bg-music1');
 const sound2 = document.getElementById('bg-music2');
 const sound3 = document.getElementById('bg-music3');
 const sound4 = document.getElementById('bg-music4');
+const sound5 = document.getElementById('bg-music5');
+
+bgMusic.loop = true;
+
+// Ẩn nội dung chính ban đầu
+gif.style.display = 'none';
+question.style.display = 'none';
+noBtn.style.display = 'none';
+yesBtn.style.display = 'none';
+
+// Xử lý click vào dialog
+startDialog.addEventListener('click', () => {
+  startDialog.style.display = 'none';
+  gif.style.display = 'block';
+  question.style.display = 'block';
+  noBtn.style.display = 'inline-block';
+  yesBtn.style.display = 'inline-block';
+  bgMusic.play();
+});
 
 const content = [
   { gif: 'https://i.pinimg.com/originals/7a/ef/73/7aef734a86dce4dc206976d4f0586f2c.gif', message: 'Bạn chắc chứ? 😢' },
@@ -30,13 +51,8 @@ noBtn.addEventListener('click', () => {
     noBtn.textContent = 'Năn nỉ đó bấm Có đi 😭';
   }
 
-  if (clickCount <= 5) {
-    sound1.play(); 
-  } else if (clickCount <= 8) {
-    sound2.play(); 
-  }else{
-    sound3.play();
-  }
+  const sounds = [sound1, sound2, sound3];
+  sounds[(clickCount - 1) % 3].play();
 
   const emoji = document.createElement('div');
   emoji.textContent = '😭';
@@ -60,11 +76,13 @@ noBtn.addEventListener('click', () => {
 });
 
 yesBtn.addEventListener('click', () => {
+  bgMusic.pause(); // Dừng nhạc nền
   question.textContent = 'Tớ biết mà! Tớ cũng thích cậu nhiều lắm ❤️';
   gif.src = 'https://i.pinimg.com/originals/7e/f6/9c/7ef69cd0a6b0b78526c8ce983b3296fc.gif';
   noBtn.style.display = 'none';
   yesBtn.style.display = 'none';
   explodeHearts();
+  sound5.play();
   sound4.currentTime = 103.5;
   sound4.play();
 });

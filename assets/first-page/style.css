@@ -11,7 +11,7 @@ body {
     font-family: 'Comic Sans MS', cursive, sans-serif;
     font-weight: bold;
     font-size: 18px;
-    color: white;
+    color: 	#440000;
     border-radius: 8px;
     box-shadow: 0 0 10px pink;
     animation: fadeOut 10s ease forwards;

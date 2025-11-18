@@ -175,7 +175,7 @@ document.addEventListener("click", function startExperience() {
     audio.play().catch(error => {
         console.log("Lỗi phát nhạc:", error);
     });
-    enterFullscreen();
+    // enterFullscreen();
     startPopups();
     
     // Hiển thị loading screen sau 1s, sau đó showSwipeGuide sau 15s

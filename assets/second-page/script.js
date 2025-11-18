@@ -39,7 +39,7 @@ startDialog.addEventListener('click', () => {
   noBtn.style.display = 'inline-block';
   yesBtn.style.display = 'inline-block';
   bgMusic.play();
-  enterFullscreen();
+  // enterFullscreen();
 });
 
 const content = [
